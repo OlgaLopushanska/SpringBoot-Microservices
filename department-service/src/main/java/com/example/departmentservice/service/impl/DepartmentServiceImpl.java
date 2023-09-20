@@ -2,6 +2,7 @@ package com.example.departmentservice.service.impl;
 
 import com.example.departmentservice.dto.DepartmentDto;
 import com.example.departmentservice.entity.Department;
+import com.example.departmentservice.exception.DepartmentNotFoundException;
 import com.example.departmentservice.mapper.DepartmentMapper;
 import com.example.departmentservice.mapper.DepartmentMapperWithMapstruct;
 import com.example.departmentservice.repository.DepartmentRepository;
@@ -50,6 +51,9 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public DepartmentDto getDepartmentByCode(String code) {
         Department department = departmentRepository.findByDepartmentCode(code);
+        if(department == null) {
+            throw new DepartmentNotFoundException("Department", "code", code);
+        }
         DepartmentDto departmentDto = DepartmentMapperWithMapstruct.MAPPER.mapToDepartmentDto(department);
        // DepartmentDto  departmentDto = modelMapper.map(department, DepartmentDto.class);
         //DepartmentDto departmentDto = DepartmentMapper.mapToDepartmentDto(department);

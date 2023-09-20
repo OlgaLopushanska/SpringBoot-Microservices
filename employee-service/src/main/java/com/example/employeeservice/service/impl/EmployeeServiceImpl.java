@@ -2,6 +2,7 @@ package com.example.employeeservice.service.impl;
 
 import com.example.employeeservice.dto.EmployeeDto;
 import com.example.employeeservice.entity.Employee;
+import com.example.employeeservice.exception.EmployeeNotFoundException;
 import com.example.employeeservice.mapper.EmployeeMapperMapstruct;
 import com.example.employeeservice.repository.EmployeeRepository;
 import com.example.employeeservice.service.EmployeeService;
@@ -30,7 +31,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeDto getEmployeeById(Long id) {
-        Employee employee = employeeRepository.findById(id).orElseThrow(RuntimeException::new);
+        Employee employee = employeeRepository.findById(id).orElseThrow(()->new EmployeeNotFoundException("Employee", "id", id));
         EmployeeDto employeeDto = modelMapper.map(employee, EmployeeDto.class);
        // EmployeeDto employeeDto = EmployeeMapperMapstruct.MAPPER.mapToEmployeeDto(employee);
 //        EmployeeDto employeeDto = new EmployeeDto(employee.getId(), employee.getFirstName(),
