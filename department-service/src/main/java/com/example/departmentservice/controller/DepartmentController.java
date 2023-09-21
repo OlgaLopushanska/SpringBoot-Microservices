@@ -29,7 +29,7 @@ public class DepartmentController {
     }
 
     @GetMapping("{code}")
-    public ResponseEntity<DepartmentDto> getDepartmentById(@PathVariable("code") String code) {
+    public ResponseEntity<DepartmentDto> getDepartmentByCode(@PathVariable("code") String code) {
         DepartmentDto dto = departmentService.getDepartmentByCode(code);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
