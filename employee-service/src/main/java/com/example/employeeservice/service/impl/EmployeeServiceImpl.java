@@ -3,6 +3,7 @@ package com.example.employeeservice.service.impl;
 import com.example.employeeservice.dto.APIResponseDto;
 import com.example.employeeservice.dto.DepartmentDto;
 import com.example.employeeservice.dto.EmployeeDto;
+import com.example.employeeservice.dto.OrganizationDto;
 import com.example.employeeservice.entity.Employee;
 import com.example.employeeservice.exception.EmployeeNotFoundException;
 import com.example.employeeservice.mapper.EmployeeMapperMapstruct;
@@ -57,11 +58,17 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .retrieve()
                 .bodyToMono(DepartmentDto.class)
                 .block();
+        OrganizationDto organizationDto = webClient.get()
+                .uri("http://localhost:8083/api/organizations/" + employee.getOrganizationCode())
+                .retrieve()
+                .bodyToMono(OrganizationDto.class)
+                .block();
       //  DepartmentDto departmentDto = apiClient.getDepartmentByCode(employee.getDepartmentCode());
         EmployeeDto employeeDto = modelMapper.map(employee, EmployeeDto.class);
         APIResponseDto apiResponseDto = new APIResponseDto();
         apiResponseDto.setEmployeeDto(employeeDto);
         apiResponseDto.setDepartmentDto(departmentDto);
+        apiResponseDto.setOrganizationDto(organizationDto);
         // EmployeeDto employeeDto = EmployeeMapperMapstruct.MAPPER.mapToEmployeeDto(employee);
 //        EmployeeDto employeeDto = new EmployeeDto(employee.getId(), employee.getFirstName(),
 //                employee.getLastName(), employee.getEmail());
@@ -75,9 +82,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         departmentDto.setDepartmentName("R&D");
         departmentDto.setDepartmentCode("1223");
         departmentDto.setDepartmentDescription("Research and devalopment");
-        EmployeeDto employeeDto = new EmployeeDto(
-                employee.getId(), employee.getFirstName(), employee.getLastName(),
-                employee.getEmail(), employee.getDepartmentCode());
+        EmployeeDto employeeDto = modelMapper.map(employee, EmployeeDto.class);
         APIResponseDto apiResponseDto = new APIResponseDto();
         apiResponseDto.setEmployeeDto(employeeDto);
         apiResponseDto.setDepartmentDto(departmentDto);
